@@ -38,9 +38,20 @@ function inherit(p) {
 // how to export module's function in node js
 module.exports = inherit;
 
+// Object.create
 var o = {x: 12};
 var f = inherit(o);
 console.assert(o.isPrototypeOf(f));
+console.assert(Object.getPrototypeOf(f) === o);
 console.assert(f.x == 12);
 f.x = 14;
 console.assert(o.x == 12);
+
+o.name = function () {
+    return "Name";
+};
+
+console.assert(f.name() === "Name");
+
+
+

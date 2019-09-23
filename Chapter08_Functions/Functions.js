@@ -174,6 +174,51 @@ console.assert(o_z_bind.y === 2);
 var ab = new Function("x", "y", "return x+y;");
 console.assert(ab(1, 2) === 3);
 
+// patch_extend
+var extend = (function () {
+    for (var p in {toString: null}) {
+        return function (o) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var prop in source) {
+                    o[prop] = source[prop];
+                }
+            }
+            return o;
+        };
+    }
+
+    return function (o) {
+        for (var i = 1; i < arguments.length; i++) {
+            var source = arguments[i];
+            for (var prop in source) {
+                o[prop] = source[prop];
+            }
+            for (var j in protoprops) {
+                var proto_prop = protoprops[j];
+                if (source.hasOwnProperty(proto_prop)) {
+                    o[proto_prop] = source[proto_prop];
+                }
+            }
+        }
+        return o;
+
+    };
+    var protoprops = ["toString", "valueOf", "constructor", "hasOwnProperty", "isPrototypeOf", "PropertyIsEnumerable", "toLocaleString"];
+
+}());
+
+var ae = {};
+var be = {x: 2};
+var ce = {toString: 4};
+var de = {hasOwnProperty: 6};
+var ae_extend = extend(ae, be, ce, de);
+console.assert(ae.x === 2);
+console.assert(ae.toString === 4);
+console.assert(ae.hasOwnProperty === 6);
+
+module.exports = extend;
+
 // new Function is out of local scope.
 var scope = "global";
 

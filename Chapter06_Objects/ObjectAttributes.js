@@ -15,8 +15,10 @@ function classof(o) {
     if (o === undefined) {
         return "Undefined";
     }
-    return Object.prototype.toString.call(0).slice(8, -1);
+    return Object.prototype.toString.call(o).slice(8, -1);
 }
+
+module.exports = classof;
 
 var num = new Number(12);
 console.assert(classof(num) == 'Number');

@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>ShowModal</title>
+    <script>
+        function showModal() {
+            // work in safari 12.1.2
+            var p = window.showModalDialog("ModalDialogDemo.html", ["Sum:", "A", "B", "C"], "dialogwidth:400; dialogheight:300; resizable:yes");
+            result = document.getElementById("result");
+            result.innerText = p.toString();
+        }
+    </script>
+</head>
+<body>
+<button onclick="showModal()">Show Modal</button>
+<p id="result"></p>
+</body>
+</html>

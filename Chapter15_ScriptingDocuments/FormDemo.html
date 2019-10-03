@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Show Form</title>
+    <script>
+        function countryChange() {
+            var contrySelect = document.getElementById("country select");
+            var show = document.getElementById("country short name");
+            show.innerText = contrySelect.options[contrySelect.options.selectedIndex].value;
+        }
+    </script>
+</head>
+<body>
+<div>
+    <button value="Not Show" name="buttonA">button show content</button>
+    <br>
+    <input type="button" value="input button show value" name="inputButtonA"/>
+    <br>
+    <form name="age">
+        <label><input type="checkbox" name="age" value="12"/>12</label>
+        <label><input type="checkbox" name="age" value="14"/>14</label>
+    </form>
+    <form name="sex">
+        <label> <input type="radio" name="sex" value="M"/> Male</label>
+        <label> <input type="radio" name="sex" value="F"/> Female</label>
+    </form>
+    <form name="arrival">
+        <label>Arrival Date:<input type="text" name="arrival" placeholder="yyyy-mm-dd"></label>
+        <br>
+        <label>Arrival Description:<br><textarea rows="3" cols="12"></textarea></label>
+        <br>
+        <label>Passport:<br><input type="file" name="passport"></label>
+        <br>
+        <label>Password:<br><input type="password" name="password"/></label>
+    </form>
+    <form name="country">
+        <select id="country select" onchange="countryChange()">
+            <option value="CN">China</option>
+            <option value="CA">Canada</option>
+            <option value="USA">America</option>
+        </select>
+        <span id="country short name"> </span>
+    </form>
+</div>
+</body>
+</html>

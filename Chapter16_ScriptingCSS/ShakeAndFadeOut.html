@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>ShakeAndFadeout</title>
+    <style>
+        button {
+            font: 12px "Source Code Pro for Powerline";
+        }
+    </style>
+
+    <script>
+        function shade(e, oncomplete, distance, time) {
+            if (typeof e === "string")
+                e = document.getElementById(e);
+            if (!time) time = 500;
+            if (!distance) distance = 5;
+            var originStyle = e.style.cssText;
+            e.style.position = "relative";
+            var start = (new Date()).getTime();
+            animate();
+
+            function animate() {
+                var now = (new Date()).getTime();
+                var elapsed = now - start;
+                var fraction = elapsed / time;
+                if (fraction < 1) {
+                    var x = distance * Math.sin(fraction * 4 * Math.PI);
+                    e.style.left = x + "px";
+                    setTimeout(animate, Math.min(25, time - elapsed));
+                } else {
+                    e.style.cssText = originStyle;
+                    if (oncomplete)
+                        oncomplete(e);
+                }
+            }
+        }
+
+        function fadeOut(e, oncomplete, time) {
+            if (typeof e === "string")
+                e = document.getElementById(e);
+            if (!time) time = 500;
+            var ease = Math.sqrt;
+
+            var start = (new Date()).getTime();
+            animate();
+
+            function animate() {
+                var elapsed = (new Date()).getTime() - start;
+                var fraction = elapsed / time;
+                if (fraction < 1) {
+                    var opacity = 1 - ease(fraction);
+                    e.style.opacity = String(opacity);
+                    setTimeout(animate, Math.min(25, time - elapsed));
+                } else {
+                    e.style.opacity = "0";
+                    if (oncomplete)
+                        oncomplete(e);
+                }
+            }
+        }
+
+        function assertComputedStyle() {
+            var fadeout_v2 = document.getElementById("fadeout");
+            var fadeout_v2_styles = window.getComputedStyle(fadeout_v2, null);
+            console.assert(fadeout_v2_styles.fontSize === "12px");
+            console.log(fadeout_v2_styles.backgroundColor);
+        }
+
+        function scale(e, factor) {
+            var size = parseInt(window.getComputedStyle(e, "").fontSize);
+            e.style.fontSize = factor * size + "px";
+        }
+
+        function scaleColor(e, factor) {
+            var color = window.getComputedStyle(e, "").backgroundColor;
+            var components = color.match(/[\d\.]+/g);
+            for (var i = 0; i < 3; i++) {
+                var x = Number(components[i]) * factor;
+                x = Math.round(Math.min(Math.max(x, 0), 255));
+                components[i] = String(x);
+            }
+            if (components.length === 3) {
+                e.style.backgroundColor = "rgb(" + components.join() + ")";
+            } else {
+                e.style.backgroundColor = "rgba(" + components.join() + ")";
+            }
+        }
+
+        var savedStyleSheetText = "";
+
+        function changeAllButtonsFont() {
+            var sheetsLength = document.styleSheets.length;
+            for (var i = 0; i < sheetsLength; i++) {
+                var currentStyleSheet = document.styleSheets[i];
+                var currentRules = currentStyleSheet.cssRules;
+                for (var j = 0; j < currentRules.length; j++) {
+                    var currentRule = currentRules[j];
+                    if (!currentRule.cssText) continue;
+                    var selector = currentRule.selectorText;
+                    if (selector === "button") {
+                        currentStyleSheet.removeRule(j);
+                        savedStyleSheetText = currentRule.cssText;
+                        j--;
+                    }
+                }
+            }
+        }
+
+        function revertButtonFontChange() {
+            var head = document.getElementsByTagName("head")[0];
+            var style = document.createElement("style");
+            head.appendChild(style);
+            var styleSheet = document.styleSheets[document.styleSheets.length - 1];
+            styleSheet.insertRule(savedStyleSheetText);
+        }
+    </script>
+</head>
+<body>
+<button onclick="shade(this, fadeOut);">Shake And FadeOut v1</button>
+<button id="fadeout" style="transition: opacity .5s ease-in; font: 12px italic;" onclick="assertComputedStyle()">FadeOut
+    v2
+</button>
+<button onclick="scale(this, 0.8)">scale</button>
+<button onclick="scaleColor(this, 0.8)">scaleColor</button>
+<button onclick="changeAllButtonsFont()">change all buttons font</button>
+<button onclick="revertButtonFontChange()">revert button font change</button>
+
+</body>
+</html>

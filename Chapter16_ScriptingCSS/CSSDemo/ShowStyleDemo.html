@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Show Style</title>
+    <style type="text/css">
+        h1, h2 {
+            color: blue;
+            font-style: italic;
+        }
+
+        .WARNING {
+            font-weight: bold;
+            font-size: 150%;
+            margin: 0 1in 0 1in;
+            background: yellow;
+            border: solid red 8px;
+            padding: 10px;
+        }
+
+        .WARNING h1, .WARNING h2 {
+            text-align: center;
+        }
+
+        #special {
+             text-align: center;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<link rel="stylesheet" href="freestyle.css" type="text/css">
+<body>
+<div>
+    <span>SHOW</span>
+    <p>SUN</p>
+</div>
+<div>
+    <h1>Cascading Style Sheets Demo</h1>
+    <div class="WARNING">
+        <h2>Warning</h2>
+        This is warning!
+        Notice how it grabs your attention with its bold text and bright colors.
+        Also notice that the heading is centered and in blue italics.
+    </div>
+    <p id="special">
+        This paragraph is centered<br>
+        and appears in uppercase letters.<br>
+        <span style="text-transform: none">
+            Here we explicitly use an inline style tto override the uppercase letters.
+        </span>
+    </p>
+</div>
+</body>
+</html>

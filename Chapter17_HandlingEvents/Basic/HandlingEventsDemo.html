@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="uk">
+
+<head>
+    <title>Handling Events Demo</title>
+</head>
+
+<body>
+<div>
+    <button id="my button">Show Time Twice</button>
+</div>
+
+<div>
+    <button id="show id button" onclick="alert(id)"> Show Current Element's ID Directly</button>
+</div>
+
+<div id="first">
+    <div id="second">
+        <div id="third">
+            <button id="button">StopImmediatePropagation in Event Capturing</button>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a href="http://www.baidu.com">Jump to the link</a><br/>
+    <a href="http://www.baidu.com" onclick="return false">Stop to Jump to the link</a>
+</div>
+</body>
+
+<script type="application/javascript">
+    // show Time Twice
+    var a = document.getElementById("my button");
+    a.onclick = function () {
+        var t1 = new Date();
+        alert("Time1: " + t1);
+    };
+    a.addEventListener("click", function () {
+        var t2 = new Date();
+        alert("Time2: " + t2);
+    }, false);
+    // StopImmediatePropagation in Event Capturing
+    var first = document.getElementById("first");
+    first.addEventListener("click", function () {
+        alert("first");
+    }, true);
+    first.addEventListener("click", function () {
+        alert("first in bubbling")
+    });
+    var second = document.getElementById("second");
+    second.addEventListener("click", function () {
+        alert("second");
+    }, true);
+    var third = document.getElementById("third");
+    third.addEventListener("click", function () {
+        alert("third v0");
+    }, true);
+    third.addEventListener("click", function (event) {
+        alert("third v1");
+        event.stopImmediatePropagation();
+    }, true);
+    third.addEventListener("click", function () {
+        alert("third v2");
+    }, true);
+    var button = document.getElementById("button");
+    button.addEventListener("click", function () {
+        alert("button");
+    }, true);
+</script>
+
+</html>

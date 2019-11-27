@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>KeyDown</title>
+</head>
+<script type="application/javascript" src="../whenReady.js"></script>
+<script type="application/javascript" src="Keymap.js"></script>
+<script type="application/javascript">
+    whenReady(function () {
+        var keymap = new Keymap();
+
+        function showKey(event, keyid) {
+            var show = document.getElementById("show");
+            show.innerText = keyid;
+        }
+
+        keymap.install(document);
+        keymap.bind("ctrl_a", showKey);
+        keymap.bind("ctrl_shift_b", showKey);
+    });
+
+</script>
+<body>
+<div id="show"></div>
+</body>
+</html>

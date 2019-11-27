@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Drag Source</title>
+    <script src="../whenReady.js"></script>
+    <script>
+        whenReady(function () {
+            var clock = document.getElementById("clock");
+            var icon = new Image();
+            icon.src = "timeclock.jpeg";
+
+            function displayTime() {
+                var now = new Date();
+                var hrs = now.getHours();
+                var mins = now.getMinutes();
+                if (mins < 10) mins = "0" + mins;
+                clock.innerHTML = hrs + ":" + mins;
+                setTimeout(displayTime, 60000);
+
+            }
+
+            displayTime();
+
+            clock.draggable = true;
+            clock.ondragstart = function (event) {
+                var event = event || window.event;
+                var dt = event.dataTransfer;
+                dt.setData("Text", new Date() + "\n");
+                if (dt.setDragImage) dt.setDragImage(icon, 0, 0);
+            }
+        });
+    </script>
+    <style type="text/css">
+        #clock {
+            font: bold 24pt sans;
+            background: #ddf;
+            padding: 10px;
+            border: solid black 2px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>drag time from clock</h1>
+<span id="clock"></span>
+<textarea rows="10" cols="20"></textarea>
+</body>
+</html>

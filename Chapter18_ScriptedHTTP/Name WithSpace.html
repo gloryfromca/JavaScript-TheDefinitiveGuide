@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Name WithSpace</title>
+    <script type="application/javascript" src="../Chapter17_HandlingEvents/whenReady.js"></script>
+    <script type="application/javascript">
+        whenReady(
+            function splicePageLink() {
+                var a = document.getElementById("currentLink");
+                var file_name = "Name WithSpace.html";
+                var template = "http://localhost:63342/JavaScript-TheDefinitiveGuide/Chapter18_ScriptedHTTP/";
+                console.assert(encodeURIComponent(file_name) === "Name%20WithSpace.html");
+                a.href = template + encodeURIComponent(file_name);
+            }
+        );
+
+    </script>
+</head>
+<body>
+<div>
+    WebStorm open this html with Chrome!
+</div>
+<div>
+    http://localhost:63342/JavaScript-TheDefinitiveGuide/Chapter18_ScriptedHTTP/Name%20WithSpace.html
+</div>
+<div>
+    the space ` ` in this path is converted to `%20`.
+</div>
+<br/>
+<br/>
+<div>
+    <a id="currentLink" href="http://www.example.com">current page.</a>
+</div>
+</body>
+</html>

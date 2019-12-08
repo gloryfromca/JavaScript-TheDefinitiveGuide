@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>ChatClient</title>
+</head>
+<body>
+<input id="input" style="width: 100%">
+</body>
+</html>
+<script type="application/javascript">
+    window.onload = function () {
+        var nick = prompt("Enter Your Name:");
+        var input = document.getElementById("input");
+        input.focus();
+
+        var chat = new EventSource("/chat");
+        chat.onmessage = function (event) {
+            data = event.data;
+            var node = document.createTextNode(data);
+            var div = document.createElement("div");
+            div.appendChild(node);
+            document.body.insertBefore(div, input);
+            input.scrollIntoView();
+        };
+        input.onchange = function () {
+            var message = nick + ": " + input.value;
+            var request = new XMLHttpRequest();
+            request.open("POST", "/chat");
+            request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+            request.send(message);
+            input.value = "";
+        }
+    }
+</script>

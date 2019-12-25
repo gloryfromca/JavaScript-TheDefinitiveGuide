@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>jQuery Demo</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            var bodyscripts = $("script", document.body);
+            console.assert(bodyscripts.selector === "script");
+            console.assert(bodyscripts.context === document.body);
+            console.assert(bodyscripts.jquery === "1.4.2");
+            console.log("executed");
+
+            // do until id = div1
+            $("div").each(function (idx) {
+                $(this).prepend(idx + ": ");
+                if (this.id === "div1") return false;
+            });
+
+            // map
+            var headerSorted = $(":header").map(function () {
+                return this.id;
+            }).toArray().sort();
+            console.assert(headerSorted[1] === '2.1');
+
+            // attr
+            $("form").attr("action");
+            $("#icon").attr("src", "icon.gif");
+            $("#banner").attr({
+                src: "banner.gif",
+                alt: "Advertisement",
+                width: 720, height: 64
+            });
+            $("a").removeAttr("target");
+            $("a").attr("target", "_blank");
+            $("a").attr("target", function () {
+                if (this.host === location.host) {
+                    return "_self";
+                } else return "_blank";
+            });
+
+            // css
+            $("h1").css("font-variant", "small-caps");
+            $("h1").css({
+                backgroundColor: "yellow",
+                padding: "10px 2px 4px 2px"
+            });
+            $("h1").css("font-size", function (i, curval) {
+                return Math.round(1.25 * parseInt(curval));
+            });
+
+            // class operation
+            $("h1").addClass("hilite");
+            $("h1").removeClass("hilite");
+            $("h1").toggleClass("big bold");
+            console.assert($("h1").is(".first") === $("h1").hasClass("first"));
+
+            // val()
+            console.assert($("select#extras").val() === "volvo");
+            console.assert($("input:radio[name=ship]:checked").val() === "1");
+
+            // text() html()
+            console.assert($("h2").text() === "H2-1H2-2");
+            console.assert($("h2").html() === "H2-1");
+
+            // offset
+            var elt = $("#sprite");
+            var position = elt.offset();
+            position.top += 100;
+            elt.offset(position);
+
+            $("h3").offset(function (index, currentPos) {
+                return {left: currentPos.left + 1.2 * index, top: currentPos.top};
+            });
+
+            // width height
+            var body = $("body");
+            var contentWidth = body.width();
+            var paddingWidth = body.innerWidth();
+            var borderWidth = body.outerWidth();
+            var marginWidth = body.outerWidth(true);
+
+            function page(n) {
+                var w = $(window);
+                var pagesize = w.height();
+                var current = w.scrollTop();
+                w.scrollTop(current + n * pagesize);
+            }
+
+            page(0.2);
+
+            // data
+            $("div").data("x", 1);
+            $("div.nodata").removeData("x");
+            var x = $("#mydiv").data("x");
+            console.assert(x === 1);
+        });
+    </script>
+</head>
+<body>
+<div id="div1">first</div>
+<div id="div2">second</div>
+<br/>
+<h1 id="1.1">H1</h1>
+<h2 id="2.1">H2-1</h2>
+<h2 id="3.1">H2-2</h2>
+<br/>
+<a href="http://baidu.com">BaiDu</a>
+<br/>
+<select id="extras">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+</select>
+<br/>
+<input type="radio" name="ship" checked="true" value="1">ship1
+<input type="radio" name="ship" value="2">ship2
+<br/>
+<h3 id="sprite">sprite</h3>
+<h3 id="sprite2">sprite2</h3>
+<br/>
+<div class="nodata"></div>
+<div id="mydiv"></div>
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>jQueryEvent</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script type="application/javascript">
+        // new elt with event function
+        $(function () {
+            $("<img/>", {
+                click: function () {
+                    $(this).css("opacity", "50%");
+                }
+            });
+
+            // event
+            $("#my_a2").click(function () {
+                return false;
+            });
+
+            // bind
+            function f() {
+            }
+
+            function g() {
+            }
+
+            $("a").bind({"mouseenter.myMod": f, "mouseleave.myMod": g}, {"name": "a"});
+            $("a").one({"mouseenter.myMod": f, "mouseleave.myMod": g}, {"name": "a"});
+
+            // unbind
+            $("a").unbind("mouseenter.myMod mouseleave.myMod");
+            $("a").unbind(".myMod");
+
+            function h() {
+            }
+
+            $("a").bind("click", h);
+            $("a").unbind("click", h);
+
+            // trigger
+            $("#my_form").submit();
+            $("#my_form").trigger("submit");
+
+            $("#my_button").trigger("click.ns1");
+            $("#my_button").trigger("click!");
+
+            // trigger event
+            $("button").click(function (e, la, fa) {
+                if (e.synthetic) {
+                    console.log(this.id + ": " + "synthetic");
+                    return;
+                }
+                console.log(this.id + ": " + la + " " + fa);
+            });
+
+            $("#my_button1").click(function (e) {
+                $("#my_button2").trigger(e);
+            });
+
+            $("#my_button1").trigger({type: "click", synthetic: true});
+
+            $("#my_button1").trigger("click", ["la", "fa"]);
+
+            // trigger all click event
+            console.log("trigger all click event...");
+            jQuery.event.trigger("click");
+            console.log("trigger all click event done");
+
+            // triggerHandler
+            $("#my_a1").click(function (e) {
+                console.log("my_a1 func");
+            });
+            $("#my_div1").click(function (e) {
+                console.log("my_div1 func");
+                // stop the jump
+                return false;
+            });
+
+            console.log("triggerHandler click link...");
+            $("#my_a1").triggerHandler("click");
+            console.log("triggerHandler click link done");
+
+            // self-defined event
+            $("#logoff").click(function () {
+                $.event.trigger("logoff");
+            });
+
+            // delegate live
+            $(document).delegate("a", "mouseover", f);
+
+            var x = $("a");
+            x.live("mouseenter", g);
+            $(x.context).delegate(x.selector, "mouseenter", g);
+
+            // live example
+            var newA = document.createElement("a");
+            newA.id = "newA";
+            newA.innerText = "Facebook";
+            newA.href = "https://facebook.com";
+
+            function q(e) {
+                if (e.target === newA) {
+                    console.log("mouseenter: " + newA.id);
+
+                }
+            }
+
+            x.live("mouseenter", q);
+
+            $("body").append(newA);
+
+            // die undelegate
+            $("a").die("mouseenter", g);
+            $(document).delegate("a", "mouseenter", g);
+
+        });
+    </script>
+</head>
+<body>
+<button id="my_button1"></button>
+<button id="my_button2"></button>
+<div id="my_div1">
+    <a id="my_a1" href="https://www.baidu.com">BaiDu</a>
+</div>
+</body>
+</html>

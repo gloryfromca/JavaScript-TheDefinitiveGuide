@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>jQueryAnimate</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            jQuery.fx.off = false;
+
+            // self-defined speed
+            jQuery.fx.speeds["medium-fast"] = 300;
+            jQuery.fx.speeds["medium-slow"] = 500;
+            jQuery.fx.speeds["large-slow"] = 1000;
+
+            // fadeIn
+            $("#my_button1").click(
+                function () {
+                    $("#my_a1").fadeIn("large-slow", function () {
+                        $(this).text("Welcome BaiDu");
+                    });
+                });
+
+            // animate example
+            $("#my_p1").animate({
+                "margin-left": "+=.5in",
+                opacity: "-=.1"
+            });
+
+            // animate params
+            jQuery.easing["squareRoot"] = Math.sqrt;
+
+            $("#my_img1").animate({
+                width: "hide",
+                borderLeft: "hide",
+                borderRight: "hide",
+                paddingLeft: "hide",
+                paddingRight: "hide"
+            }, {
+                duration: 3000,
+                queue: true,
+                easing: "linear",
+                complete: function () {
+                    // recover from hide
+                    $(this).animate({
+                            width: "show",
+                            borderLeft: "show",
+                            borderRight: "show",
+                            paddingLeft: "show",
+                            paddingRight: "show"
+                        }, {
+                            duration: 2000,
+                            queue: true
+                        }
+                    )
+                }
+            });
+
+            // two ways for different easing
+            $("#my_img2").animate({
+                    width: "hide",
+                    height: "hide",
+                    opacity: "hide"
+                },
+                {
+                    duration: 3000,
+                    specialEasing: {
+                        width: "linear",
+                        height: "squareRoot"
+                    }
+                });
+
+            $("#my_img3").animate(
+                {
+                    width: ["hide", "linear"],
+                    height: ["hide", "squareRoot"],
+                    opacity: "hide"
+                },
+                {
+                    duration: 3000
+                }
+            );
+
+            // stop delay
+            $("img").bind(
+                {
+                    mouseover: function () {
+                        $(this).stop(true).delay(500).fadeTo(1000, 0.5).delay(500).fadeTo(1000, 0.1);
+                    },
+                    mouseout: function () {
+                        $(this).stop(true).fadeTo(500, 1);
+                    }
+                }
+            );
+
+            // queue
+            $("#my_img4").fadeIn().delay(500).queue(function (next) {
+                // this `fadeTo(1000, 0.2)` will be inserted after `fadeTo(1000, 0.5)`.
+                $(this).fadeTo(1000, 0.2);
+                next();
+            }).fadeTo(1000, 0.5);
+
+            // end
+        });
+    </script>
+</head>
+<body>
+<a id="my_a1" href="https://baidu.com">BaiDu</a>
+<button id="my_button1">fadeIn</button>
+<br/>
+<p id="my_p1">this is a paragraph.</p>
+<br/>
+<img id="my_img1" src="//www.baidu.com/img/bd_logo1.png?where=super" width="270" height="129"/>
+<br/>
+<img id="my_img2" src="//mat1.gtimg.com/pingjs/ext2020/qqindex2018/dist/img/qq_logo_2x.png">
+<br>
+<img id="my_img3" src="//mat1.gtimg.com/pingjs/ext2020/qqindex2018/dist/img/qq_logo_2x.png">
+<br>
+<img id="my_img4" src="https://i0.hdslb.com/bfs/archive/1be2fd76cc98cdc6a595c05c3134fbf937a1c126.png">
+</body>
+</html>

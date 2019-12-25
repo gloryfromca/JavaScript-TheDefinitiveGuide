@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>jQueryAjax</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.10.0/jquery.min.js"></script>
+    <script type="application/javascript">
+        // jQuery events are triggered globally.
+        // handlers bound are global.
+        // registry before first ajax start.
+        $(document).bind(
+            {
+                ajaxStart: function (event) {
+                    console.assert(event.type === "ajaxStart");
+                    $("#my_div3").append("<p>ajaxStart...</p>");
+                    console.log("ajaxStart...");
+                },
+                ajaxSend: function (event, req, context) {
+                    console.assert(event.type === "ajaxSend");
+                    $("#my_div3").append("<p>ajaxSend: " + context.url + "</p>");
+                    console.log("ajaxSend: " + context.url);
+                },
+                ajaxStop: function (event) {
+                    console.assert(event.type === "ajaxStop");
+                    $("#my_div3").append("<p>ajaxStop...</p>");
+                    console.log("ajaxStop...");
+                }
+            }
+        );
+
+        // second `ajaxStart` callback, will be called after first `ajaxStart` callback.
+        $(document).bind(
+            {
+                ajaxStart: function (event) {
+                    console.log("ajaxStart2...");
+                }
+            }
+        );
+
+        $(function () {
+            // load
+            // calling with function as params is registering event handler.
+            $("my_div1").load(function () {
+                console.assert($(this).innerText === "Origin Content in my_div1");
+            });
+
+            // calling with string as params is ajax.
+            $("#my_div1").load("AjaxExample.html #example_p1");
+
+            // with query and callback
+            $("#my_div2").load("AjaxExample.html", {"year": "2019"}, function (content, code, request) {
+                console.assert(code === "success");
+            });
+
+            // getScript
+            var resp = jQuery.getScript("jquery.validate-1.13.1.js",
+                function (content, success, resp) {
+                    console.assert(resp.readyState === 4);
+                    console.assert(success === "success");
+                    $('#my_form_1').validate({
+                            rules: {
+                                username: {
+                                    required: true,
+                                    minlength: 2,
+                                    maxlength: 10
+                                },
+                                password: {
+                                    required: true,
+                                    minlength: 2,
+                                    maxlength: 10
+                                }
+                            }
+                        }
+                    );
+                }
+            );
+            console.assert(resp.readyState === 1);
+
+            // getJson
+            jQuery.getJSON("AjaxExample.json", function (content, success, resp) {
+                console.assert(resp.readyState === 4);
+                console.assert(success === "success");
+                console.assert(content['name'] === "zh");
+            });
+
+            // param
+            var param_example = $.param({a: [1, 2, 3]});
+            console.assert(param_example === "a%5B%5D=1&a%5B%5D=2&a%5B%5D=3");
+
+            // post
+            jQuery.post("AjaxExample.html", {"name": "zh"}, function (content, success, resp) {
+                console.assert(resp.readyState === 4);
+                console.assert(success === "success");
+            }, "script");
+
+            // ajax
+            jQuery.ajaxSetup({
+                timeout: 2000,
+                cache: false
+            });
+
+            // ajax script
+            jQuery.ajax(
+                {
+                    type: "POST",
+                    url: "AjaxExample.html",
+                    data: {"name": "gr"},
+                    dataType: "script",
+                    success: function (content, success, resp) {
+                        console.assert(success === "success");
+                    }
+                }
+            );
+
+            // ajax cache beforeSend
+            jQuery.ajax(
+                {
+                    type: "GET",
+                    url: "AjaxExample.json",
+                    data: {"name": "qq"},
+                    dataType: "json",
+                    timeout: 3000,
+                    // `cache` option just for get
+                    cache: false,
+                    ifModified: true,
+                    global: true,
+
+                    // callback
+                    success: function (content, success, resp) {
+                        console.assert(success === "success");
+                    },
+                    error: function (content, success, resp) {
+                        // 304 as error, jQuery 1.4 and previous versions.
+                        console.assert(success === "notmodified");
+                    },
+                    // `beforeSend` bases on non-cross ajax.
+                    beforeSend: function (resp, context) {
+                        resp.setRequestHeader("NAME", "HG");
+                    },
+                }
+            );
+
+            // ajax error
+            jQuery.ajax(
+                {
+                    type: "GET",
+                    url: "BadAjaxExample.json",
+                    dataType: "json",
+                    global: false,
+                    error: function (resp, success, error) {
+                        console.assert(success === "parsererror");
+                    },
+                }
+            );
+
+            // async
+            var a = 1;
+            jQuery.ajax(
+                {
+                    type: "GET",
+                    url: "AjaxExample.json",
+                    dataType: "json",
+                    async: false,
+                    success: function (content, success, resp) {
+                        console.assert(a === 1);
+                    }
+                }
+            );
+            a = a + 1;
+
+            // dataFilter
+            jQuery.ajax(
+                {
+                    type: "GET",
+                    url: "AjaxExample.json",
+                    dataType: "json",
+                    dataFilter: function (content, dataType) {
+                        console.assert(content === '{"name": "zh"}');
+                        console.assert(dataType === "json");
+                        return '{"name": 1}';
+                    },
+                    success: function (content, success, resp) {
+                        console.assert(content['name'] === 1);
+                    }
+                }
+            );
+
+            // jsonp jsonpCallback
+            jQuery.ajax(
+                {
+                    type: "GET",
+                    url: "AjaxExample.json",
+                    dataType: "jsonp",
+                    jsonp: "call",
+                    jsonpCallback: "handleCallOne",
+                    async: false,
+                    success: function (content, success, resp) {
+                        console.assert(1 === 1);
+                    }
+                }
+            );
+        });
+    </script>
+</head>
+<body>
+<div id="my_div1">Origin Content in my_div1</div>
+<hr/>
+<div id="my_div2">Origin Content in my_div2</div>
+<hr/>
+<form id="my_form_1">
+    <p>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"/>
+    </p>
+    <p>
+        <label for="password">Password: </label>
+        <input type="text" id="password" name="password"/>
+    </p>
+</form>
+<hr>
+<img id="my_img1" src="//www.baidu.com/img/bd_logo1.png?where=super" width="270" height="129"/>
+<div id="my_div3"></div>
+</body>
+</html>

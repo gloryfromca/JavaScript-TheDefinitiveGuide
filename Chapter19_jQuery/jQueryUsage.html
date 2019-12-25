@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>jQueryUsage</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            // append prepend before after
+            $("#log").append("<br/>" + "LOG OVER");
+            $("#log").prepend("One Application<br/>");
+            $("h3").before("<hr/>");
+            $("h3").after("<hr/>");
+            $("#h2_to_h3").replaceWith("<h3>three h3</h3>");
+
+            // clone
+            $(document.body).append("<div id='linklist'><h1>List of Links</h1></div>");
+            $("a").clone().appendTo("#linklist");
+            $("#linklist > a").after("<br/>");
+
+            // wrap wrapInner wrapAll
+            $("body>h2:not(:first)").wrapAll("<div id='rest'></div>");
+            $("h2").wrap(document.createElement("div"));
+            $("h2").wrapInner(document.createElement("i"));
+
+            //empty remove detach unwrap
+            $("#firstP").empty();
+            $("#secondP").remove();
+            $("#thirdP").unwrap();
+            var fourP = $("#fourP").detach();
+            fourP.insertBefore("#firstP");
+        });
+
+    </script>
+</head>
+<body>
+<p id="log">1 executing<br/>2 done</p>
+<br/>
+<h3>one h3</h3>
+<h3>two h3</h3>
+<h2 id="h2_to_h3">three h3</h2>
+<br/>
+<a href="https://www.baidu.com">BaiDu</a>
+<a href="https://www.aliyun.com">AliYun</a>
+<br/>
+<h2> first h2</h2>
+<h2> second h2</h2>
+<h2> third h2</h2>
+<br/>
+<div id="firstDiv">
+    <p id="firstP">first P</p>
+    <p id="secondP">second P</p>
+    <p id="thirdP">third P</p>
+    <p id="fourP">four P</p>
+</div>
+</body>
+</html>

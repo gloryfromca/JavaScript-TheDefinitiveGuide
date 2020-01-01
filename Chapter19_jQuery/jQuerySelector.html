@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>jQuerySelector</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            console.assert($(".other")[0].id === "my_div1");
+
+            console.assert($("[funny]")[1].id === "my_p1");
+            console.assert($("[funny^=r]")[0].id === "my_div1");
+            console.assert($("[funny$=2]")[0].id === "my_p1");
+            console.assert($("[funny~=f2]")[0].id === "my_p1");
+
+            console.assert($(":button")[0].id === "my_button1");
+            console.assert($("div:empty")[1].id === "empty_div");
+
+            var containsP1 = $(":contains('p1')");
+            console.assert(containsP1[containsP1.length - 1].id === "my_p1");
+            console.assert($("p:first-child")[0].id === "my_p1");
+            console.assert($("p:not(:empty)").length === 2);
+
+            console.assert($("div p:first-child + p")[0].id === "my_p2");
+            console.assert($("div > p:first-child ~ p")[0].id === "my_p2");
+            console.assert($("div > p:first-child + p")[0].id === "my_p2");
+
+            var divOrP = $("div, p");
+            console.assert(divOrP[divOrP.length - 1].id === "empty_div");
+
+            var paras = $("p");
+            console.assert(paras.first()[0].id === "my_p1");
+            console.assert(paras.eq(1)[0].id === "my_p2");
+            console.assert(paras.slice(0, -1).eq(0)[0].id === "my_p1");
+            console.assert(paras.slice(0, -1).eq(1)[0] === undefined);
+
+            console.assert($("p").filter(":not([funny])")[0].id === "my_p2");
+            console.assert($("p").filter($("[funny]"))[0].id === "my_p1");
+            console.assert($("p").filter(function (idx) {
+                return false;
+            })[0] === undefined);
+
+            console.assert($("div").not(".other").not(".father")[0].id === "empty_div");
+
+            console.assert($("div").has("p")[0].id === "my_div2");
+
+            console.assert($("div").add($("p")).length === $("div, p").length);
+
+            console.assert($("div").find("p").length === $("div p").length);
+
+            console.assert($("div").children("p")[0].id === $("div > p")[0].id);
+
+            console.assert($("#my_p2").prev()[0].id === "my_p1");
+            console.assert($("#my_p2").siblings()[0].id === "my_p1");
+
+            console.assert($("#my_p1").parent().length === 1);
+            console.assert($("#my_p1").parent()[0].id === "my_div2");
+
+            console.assert($("#my_p2").parents("div")[0].id === "my_div2");
+
+            console.assert($("#my_p2").closest("p")[0].id === "my_p2");
+
+            $("div").find("p").addClass("highlight").end().css("border", "solid black 1px");
+
+            var sel = $("div");
+            sel = sel.pushStack($("p"));
+            console.assert(sel[0].id === "my_p1");
+            sel = sel.end();
+            console.assert(sel[0].id === "my_div1");
+
+            $("div").find("p").andSelf().addClass("highlight").end().end().css("border", "solid black 1px");
+
+        });
+    </script>
+</head>
+<body>
+<div id="my_div1" class="other" funny="r1"></div>
+<hr/>
+<div id="my_div2" class="father">
+    <p id="my_p1" class="children" funny="f2">p1</p>
+    <p id="my_p2" class="children">p2</p>
+</div>
+<hr/>
+<button type="button" id="my_button1"></button>
+<hr/>
+<div id="empty_div"></div>
+</body>
+</html>

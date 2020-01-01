@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>jQueryUI</title>
+    <script src="http://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.js"></script>
+    <link id="ctrl-theme" href="http://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet">
+    <script type="application/javascript">
+        $(function () {
+            $("#button").button();
+            $("#button-icon").button({
+                icon: "ui-icon-gear",
+                showLabel: false
+            });
+
+            $("#datepicker").datepicker({
+                inline: true
+            });
+
+            $("#changeTheme").click(function () {
+                $("#ctrl-theme").attr("href", "custom/jquery-ui.css");
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+<button id="button">A button element</button>
+<button id="button-icon">An icon-only button</button>
+<input type="text" id="datepicker" size="30">
+<button id="changeTheme">changeTheme</button>
+</body>
+</html>

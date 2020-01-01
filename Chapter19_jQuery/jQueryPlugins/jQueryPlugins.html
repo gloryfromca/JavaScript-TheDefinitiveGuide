@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>jQueryPlugins</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script type="application/javascript" src="jquery.clickstar.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            // plugin
+            var click_count = 0;
+
+            function clickCount() {
+                click_count += 1;
+                console.log("Click Count: " + click_count);
+            }
+
+            $("#my_div1").bind("click", clickCount);
+            $("#my_div1").clickstar();
+            setTimeout(function () {
+                $("#my_div1").clickstar(false);
+                console.log("remove clickStar");
+            }, 4000);
+
+            // filter
+            $.expr[":"].son = function (element, index, match, elements) {
+                return $(element).attr("son") === match[3];
+            };
+            console.assert($("div:son('3')").length === 1);
+            console.assert($("div:son('3')")[0].id === "son3");
+
+
+        });
+    </script>
+</head>
+<body>
+<div id="my_div1">My Div 1</div>
+<div id="son1" son="1">Son 1</div>
+<div id="son3" son="3">Son 3</div>
+</body>
+</html>

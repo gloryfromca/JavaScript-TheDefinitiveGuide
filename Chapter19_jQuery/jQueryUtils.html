@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>jQueryUtils</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            // browser
+            console.assert($.browser.webkit);
+            console.assert(!$.browser.mozilla);
+
+            // contains
+            console.assert($.contains(document, document.body));
+
+            // each
+            console.assert($.each([1, 2], function (index, element) {
+                console.assert(index + 1 === element);
+                return true;
+            }));
+
+            // extend (Object)
+            var clone = jQuery.extend({}, {"name": "as"});
+            console.assert(clone.name === "as");
+
+            var jquery = jQuery.extend({"Honey": "doge"});
+            console.assert(jQuery.Honey === "doge");
+
+            var deepcopy = jquery.extend(true, {}, {"candidate": {"name": "qq"}});
+            console.assert(deepcopy.candidate.name === "qq");
+
+            // globalEval
+            jQuery.globalEval("var df = 'xy';");
+            console.assert(df === "xy");
+
+            // grep
+            var result = jQuery.grep([0, -1, 2, -4, 5], function (value, index) {
+                return value > 0;
+            });
+            console.assert(result[1] === 5);
+
+            // inArray
+            console.assert($.inArray(1, [2, 1]));
+
+            // isArray
+            console.assert($.isArray([]));
+
+            // isEmptyObject
+            console.assert($.isEmptyObject({}));
+
+            // isFunction
+            console.assert($.isFunction(function () {
+            }));
+
+            // isPlainObject
+            console.assert(!$.isPlainObject([1, 2, 3]));
+            console.assert(!$.isPlainObject(new Date()));
+            console.assert($.isPlainObject({"x": 0}));
+
+            // makeArray
+            console.log($.makeArray($("p")));
+
+            // map
+            var mapResult = $.map([1, 3], function (value, index) {
+                return [value, value + 1];
+            });
+            console.assert(mapResult.length === 4);
+            console.assert(mapResult[3] === 4);
+
+            // merge (Array)
+            var mergeArray = $.merge([], [1, 2]);
+            console.assert(mergeArray[1] === 2);
+
+            // parseJSON
+            console.assert($.parseJSON('{"t": 1}').t === 1);
+
+            // proxy
+            var o = {};
+            var Do = function () {
+                this.f = 1;
+            };
+            var newDo = $.proxy(Do, o);
+            newDo();
+            console.assert(o.f === 1);
+
+            // support
+            console.assert($.support.boxModel);
+
+            // trim
+            console.assert($.trim(" n ") === "n");
+
+        });
+    </script>
+</head>
+<body>
+<div id="my_div1">
+    <p id="my_p1"></p>
+    <p id="my_p2"></p>
+</div>
+</body>
+</html>

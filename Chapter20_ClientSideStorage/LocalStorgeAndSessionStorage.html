@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>LocalStorage And Session Storage</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            // operation
+            var name = localStorage.name;
+            name = localStorage["name"];
+            if (!name) {
+                name = prompt("What is your name?");
+                localStorage.name = name;
+            }
+
+            // serialize
+            localStorage.x = 10;
+            var x = parseInt(localStorage.x);
+            console.assert(x === 10);
+
+            localStorage.lastRead = (new Date()).toUTCString();
+            var lastRead = new Date(Date.parse(localStorage.lastRead));
+
+            localStorage.data = JSON.stringify({"x": 1});
+            var data = JSON.parse(localStorage.data);
+            console.assert(data.x === 1);
+
+            // sessionStorage
+            if (!sessionStorage.time) {
+                sessionStorage.time = new Date();
+            }
+
+            // getItem setItem removeItem clear
+            localStorage.setItem("x", "fly");
+            console.assert(localStorage.getItem("x") === "fly");
+            localStorage.removeItem("x");
+            console.assert(localStorage.getItem("x") === null);
+            localStorage.setItem("y", 1);
+            localStorage.clear();
+            console.assert(localStorage.getItem("y") === null);
+
+            // memory
+            var memory = window.localStorage || (window.UserDataStorage && new UserDataStorage()) || new CookieStorage();
+            var username = memory.getItem("username");
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

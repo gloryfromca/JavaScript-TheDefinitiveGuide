@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Cookie</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script type="application/javascript" src="cookieStorage.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            // cookie
+            console.assert(navigator.cookieEnabled);
+            document.cookie = "version=" + encodeURIComponent("01/04/2020 21:58:45") + "; path=/";
+            console.assert(getCookie()["version"] === "01/04/2020 21:58:45");
+
+            function setCookie(name, value, daysToLive) {
+                var cookie = name + "=" + encodeURIComponent(value);
+                if (typeof daysToLive === "number") {
+                    cookie += "; max-age=" + (daysToLive * 60 * 60 * 24);
+                }
+                document.cookie = cookie;
+            }
+
+            function getCookie() {
+                var cookies = {};
+                var all = document.cookie;
+                if (all === "") {
+                    return cookies;
+                }
+                var list = all.split("; ");
+                for (var i = 0; i < list.length; i++) {
+                    var cookie = list[i];
+                    var p = cookie.indexOf("=");
+                    var name = cookie.substring(0, p);
+                    var value = cookie.substring(p + 1);
+                    value = decodeURIComponent(value);
+                    cookies[name] = value;
+                }
+                return cookies;
+            }
+
+            // cookieStorage
+            var cookieStorage = new CookieStorage(2000, "/");
+            cookieStorage.setItem("name", "zh");
+            console.assert(cookieStorage.getItem("name") === "zh");
+            cookieStorage.removeItem("name");
+            console.assert(cookieStorage.getItem("name") === null);
+            cookieStorage.clear();
+            console.assert(document.cookie === "");
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

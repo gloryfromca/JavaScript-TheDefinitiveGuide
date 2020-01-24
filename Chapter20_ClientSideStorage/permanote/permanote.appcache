@@ -1,0 +1,8 @@
+CACHE MANIFEST
+# PermaNote v2
+permanote.html
+permanote.js
+
+NETWORK:
+*
+# http://localhost:5000/note

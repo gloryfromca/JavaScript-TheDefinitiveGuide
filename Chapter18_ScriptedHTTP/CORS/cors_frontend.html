@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Title</title>
+    <script type="application/javascript">
+        xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:2233/note");
+        // non-simple request will send preflight request firstly.
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('My-Name', 'zh');
+        xhr.send();
+        xhr.onload = function () {
+            document.getElementById("show").innerText = xhr.responseText;
+        }
+    </script>
+</head>
+<body>
+<div id="show"></div>
+</body>
+</html>

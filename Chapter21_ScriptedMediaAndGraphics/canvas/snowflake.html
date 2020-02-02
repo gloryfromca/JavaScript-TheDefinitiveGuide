@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>snowFlake</title>
+    <script src="snowflake.js"></script>
+</head>
+<body>
+<canvas id="snowflake1"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById("snowflake1");
+    canvas.setAttribute("width", "1000");
+    canvas.setAttribute("height", "240");
+    c = canvas.getContext("2d");
+    snowflake(c, 0, 15, 185, 125);
+    snowflake(c, 1, 185, 185, 125);
+    snowflake(c, 2, 385, 185, 125);
+    snowflake(c, 3, 585, 185, 125);
+    snowflake(c, 4, 785, 185, 125);
+    c.stroke();
+</script>
+</html>

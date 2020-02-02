@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hitpath and hitpaint</title>
+    <style>
+        #hitpathandhitpaint {
+            height: 500px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+<canvas id="hitpathandhitpaint" height="2000" width="2000"></canvas>
+</body>
+<script src="hitpath.js"></script>
+<script src="curves.js"></script>
+<script>
+    var canvas = document.getElementById("hitpathandhitpaint");
+    c = canvas.getContext("2d");
+    c.beginPath();
+    c.arc(500, 500, 300, 0, rads(360), false);
+    c.closePath();
+    c.fillStyle = "#0a2";
+    c.fill();
+    c.stroke();
+
+    canvas.onclick = function (event) {
+        if (hitpath(this.getContext("2d"), event)) {
+            alert("Hit!");
+        }
+        if (hitpaint(this.getContext("2d"), event)) {
+            alert("Paint!");
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ScriptingAudioAndVideo</title>
+</head>
+<body>
+<video id="news" width="640" height="480" controls preload="auto" loop>
+    <!-- Firefox and Chrome -->
+    <source src="../samples/MyVideo_1.webm" type='video/webm; codecs="vp8, vorbis"'>
+    <!-- IE and Safari -->
+    <source src="../samples/MyVideo_1.MP4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+    <!-- Flash -->
+    <object width="640" height="480" type="application/x-shockwave-flash" data="../samples/MyVideo_1.swf">
+        <div>video element not supported and Flash plugin not installed.</div>
+    </object>
+</video>
+
+<div>
+    JustAManInLove<br/>
+    <button id="audio_button_1">Play</button>
+    <button id="audio_button_2">Pause</button>
+</div>
+<audio id="audio_1">
+    <source src="../samples/JustAManInLove.mp3" type="audio/mpeg">
+</audio>
+
+<div>
+    Year3000<br/>
+    <button id="audio_button_3">Play</button>
+    <button id="audio_button_4">Pause</button>
+    <button id="audio_button_5">Muted</button>
+</div>
+<audio id="audio_2" controls>
+</audio>
+<div id="year3000_status"></div>
+<div id="year3000_play_status"></div>
+
+</body>
+<script>
+    // Just A Man In Love
+    document.getElementById("audio_button_1").addEventListener('click', function () {
+        document.getElementById("audio_1").play();
+    });
+    document.getElementById("audio_button_2").addEventListener('click', function () {
+        document.getElementById("audio_1").pause();
+    });
+
+    // Year 3000
+    var showStatus = document.getElementById("year3000_status");
+    document.getElementById("audio_button_3").addEventListener('click', function () {
+        var audio_2 = document.getElementById("audio_2");
+        var canPlay = audio_2.canPlayType("audio/wav");
+        if (canPlay && audio_2.currentTime === 0) {
+            showStatus.innerText = canPlay;
+            console.assert(audio_2.networkState === audio_2.NETWORK_EMPTY);
+            audio_2.src = "../samples/Year3000.wav";
+        }
+        audio_2.play();
+        console.assert((audio_2.networkState === audio_2.NETWORK_NO_SOURCE) || (audio_2.networkState === audio_2.NETWORK_IDLE));
+    });
+    document.getElementById("audio_button_4").addEventListener('click', function () {
+        document.getElementById("audio_2").pause();
+        showStatus.innerText = "Pause...";
+    });
+    var muted = false;
+    document.getElementById("audio_button_5").addEventListener('click', function () {
+        muted = !muted;
+        document.getElementById("audio_2").muted = muted;
+    });
+
+    // Events
+    var eventNames = ["loadstart", "progress",
+        "loadedmetadata", "loadeddata",
+        "canplay", "canplaythrough",
+        "suspend", "stalled",
+        "play", "playing", "waiting",
+        "timeupdate",
+        "pause", "seeking", "seeked", "ended",
+        "durationchange", "volumechange", "ratechange",
+        "abort", "error", "emptied"
+    ];
+    var audio_2 = document.getElementById("audio_2");
+    var year3000_play_status = document.getElementById("year3000_play_status");
+    year3000_play_status.innerText = "";
+    for (var index in eventNames) {
+        var name = eventNames[index];
+        var event_handler = (function (name) {
+            return function () {
+                year3000_play_status.innerText = year3000_play_status.innerText + "\n" + name + "...";
+                console.log(name);
+            }
+        })(name);
+        event_handler.name = name;
+        audio_2.addEventListener(name, event_handler, false);
+    }
+
+
+</script>
+</html>

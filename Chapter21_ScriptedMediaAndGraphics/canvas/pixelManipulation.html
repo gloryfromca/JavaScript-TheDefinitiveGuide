@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pixel Manipulation</title>
+</head>
+<body>
+<canvas id="pixelManipulation"></canvas>
+<img id="img_1" src="../samples/google_logo.png">
+</body>
+<script src="smear.js"></script>
+<script>
+    var canvas = document.getElementById("pixelManipulation");
+    canvas.setAttribute("width", "1500");
+    canvas.setAttribute("height", "240");
+    c = canvas.getContext("2d");
+    c.drawImage(document.getElementById("img_1"), 0, 0);
+    smear(c, 3, 0, 0, 300, 300);
+</script>
+</html>

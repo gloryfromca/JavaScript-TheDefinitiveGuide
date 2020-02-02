@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clipping</title>
+</head>
+<body>
+<canvas id="clipping"></canvas>
+</body>
+<script src="polygon.js"></script>
+<script>
+    var canvas = document.getElementById("clipping");
+    canvas.setAttribute("width", "800");
+    canvas.setAttribute("height", "800");
+    c = canvas.getContext("2d");
+
+    c.font = "bold 60pt sans-serif";
+    c.lineWidth = 2;
+    c.strokeStyle = "#000";
+
+    c.strokeRect(175, 25, 50, 325);
+    c.strokeText("<canvas>", 15, 330);
+
+    polygon(c, 3, 200, 225, 200);
+    polygon(c, 3, 200, 225, 100, 0, true);
+    c.clip();
+    c.lineWidth = 10;
+    c.stroke();
+
+    c.fillStyle = "#aaa";
+    c.fillRect(175, 25, 50, 325);
+    c.fillStyle = "#888";
+    c.fillText("<canvas>", 15, 330);
+</script>
+</html>

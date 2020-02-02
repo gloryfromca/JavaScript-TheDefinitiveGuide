@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shadows</title>
+</head>
+<body>
+<canvas id="shadows"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById("shadows");
+    canvas.setAttribute("width", "800");
+    canvas.setAttribute("height", "800");
+    c = canvas.getContext("2d");
+
+    c.shadowColor = "rgba(100, 100, 100, .4)";
+    c.shadowOffsetX = c.shadowOffsetY = 3;
+    c.shadowBlur = 5;
+
+    c.lineWidth = 10;
+    c.strokeStyle = "blue";
+    c.strokeRect(100, 100, 300, 200);
+    c.font = "Bold 36pt Helvetica";
+    c.fillText("Hello World", 115, 225);
+
+    c.shadowOffsetX = c.shadowOffsetY = 20;
+    c.shadowBlur = 10;
+    c.fillStyle = "red";
+    c.fillRect(50, 25, 200, 65);
+
+</script>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Site With Weather</title>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script>
+        $(function () {
+            var origin = "http://127.0.0.1:5000";
+            var gadget = "/todayWeather.html";
+            var iframe = document.createElement("iframe");
+            iframe.src = origin + gadget;
+            iframe.width = "250";
+            iframe.height = "100%";
+            iframe.style.cssFloat = "left";
+            document.body.insertBefore(iframe, document.body.firstChild);
+
+            var citys = document.getElementsByClassName("city");
+            for (var i = 0; i < citys.length; i++) {
+                citys[i].addEventListener("mouseover", function () {
+                    iframe.contentWindow.postMessage(this.innerText, origin);
+                }, false);
+            }
+        });
+    </script>
+</head>
+<body>
+<div>
+    Good Day!
+</div>
+<div>
+    <span class="city">shanghai</span>
+</div>
+<div>
+    <span class="city">beijing</span>
+</div>
+</body>
+</html>

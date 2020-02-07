@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Typed Arrays</title>
+</head>
+<body>
+</body>
+<script>
+    // matrix
+    var sodoku = new Uint8Array(81);
+
+    // set
+    var bytes = new Float64Array(1024);
+    var pattern = new Uint8Array([0, 1, 2, 3]);
+    bytes.set(pattern);
+    bytes.set([4, 5, 6], 4);
+    console.assert(bytes[5] === 5);
+
+    // subarray
+    var ints = new Int16Array([1, 2, 3, 4, 5]);
+    var last3 = ints.subarray(ints.length - 3, ints.length);
+    console.assert(last3[0] === 3);
+
+    // arrayBuffer
+    console.assert(ints.buffer === last3.buffer);
+    console.assert(last3.byteLength === 6);
+    console.assert(last3.buffer.byteLength === 5 * 2);
+
+    var test_bytes = new Uint8Array(8);
+    test_bytes[0] = 1;
+    console.assert(test_bytes[0] === 1);
+    console.assert(test_bytes.buffer[0] === undefined);
+    test_bytes.buffer[1] = 255;
+    console.assert(test_bytes.buffer[1] === 255);
+    console.assert(test_bytes[1] === 0);
+
+    var buf = new ArrayBuffer(1024 * 1024);
+    var lastK = new Uint8Array(buf, 1024 * 1023);
+    var ints2 = new Uint8Array(buf, 1024, 256);
+
+    // little-endian
+    var little_endian = new Int8Array(new Int32Array([1]).buffer)[0] === 1;
+    console.assert(little_endian);
+
+    // DataView
+    var data = new Int32Array([1, 2, 3, 4, 5]).buffer;
+    var view = new DataView(data);
+    var int = view.getInt32(0);
+    int = view.getInt32(4, false);
+    int = view.getInt32(8, true);
+    view.setInt32(8, int, false);
+
+</script>
+</html>

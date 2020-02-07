@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket ChatRoom</title>
+    <script>
+        window.onload = function () {
+            var nick = prompt("Enter your nickname:");
+            var input = document.getElementById("input");
+            var socket = new WebSocket("ws://localhost:8000/" , "echo-protocol");
+            socket.onmessage = function (event) {
+                var msg = event.data;
+                var node = document.createTextNode(msg);
+                var div = document.createElement("div");
+                div.appendChild(node);
+                document.body.insertBefore(div, input);
+                input.scrollIntoView();
+            };
+
+            input.onchange = function () {
+                var msg = nick + ": " + input.value;
+                socket.send(msg);
+                input.value = "";
+            }
+
+        }
+
+    </script>
+</head>
+<body>
+<input id="input" style="width: 100%">
+</body>
+</html>

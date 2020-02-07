@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zipcode Database</title>
+    <script src="zipcodeDatabase.js"></script>
+</head>
+<body>
+<div>
+    <p> Enter a zip code to find its city:</p>
+    Zipcode: <input onchange="displayCity(this.value)">
+    City:
+    <output id="city"></output>
+</div>
+<div>
+    <p>Enter a city name:</p>
+    City: <input onchange="displayZipcodes(this.value)">
+    <div id="zipcodes"></div>
+</div>
+</body>
+</html>

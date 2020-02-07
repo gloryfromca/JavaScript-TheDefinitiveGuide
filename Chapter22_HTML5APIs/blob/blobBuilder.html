@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blob Builder</title>
+</head>
+<body>
+</body>
+<script>
+    // deprecated
+    var bb = new BlobBuilder();
+
+    bb.append("this is blob\0");
+
+    var ab = new ArrayBuffer(4 * 10);
+    var dv = new DataView(ab);
+    for (var i = 0; i < 10; i++) {
+        dv.setInt32(i * 4, i);
+    }
+    bb.append(ab);
+
+    var blob = bb.getBlob("x-optional/text");
+
+    console.log(blob);
+</script>
+</html>

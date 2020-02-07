@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Drap Image Files</title>
+    <style>
+        #droptarget {
+            border: solid black 2px;
+            width: 200px;
+            height: 200px;
+        }
+
+        #droptarget.active {
+            border: solid red 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="droptarget">Drop Image Files Here</div>
+</body>
+<script>
+    var getBlobURL = (window.URL && URL.createObjectURL.bind(URL)) || (window.webkitURL && webkitURL.createObjectURL.bind(webkitURL)) ||
+        window.createObjectURL;
+
+    var revokeBlobURL = (window.URL && URL.revokeObjectURL.bind(URL)) || (window.webkitURL && webkitURL.revokeObjectURL.bind(webkitURL)) ||
+        window.revokeBlobURL;
+
+    window.onload = function () {
+        var droptarget = document.getElementById("droptarget");
+        droptarget.ondragenter = function (e) {
+            var types = e.dataTransfer.types;
+            if (!types || (types.contains && types.contains("Files")) || (types.indexOf && types.indexOf("Files") != -1)) {
+                droptarget.classList.add("active");
+                return false;
+            }
+        };
+        droptarget.ondragleave = function () {
+            droptarget.classList.remove("active");
+        };
+
+        droptarget.ondragover = function (e) {
+            return false;
+        };
+
+        droptarget.ondrop = function (e) {
+            var files = e.dataTransfer.files;
+            for (var i = 0; i < files.length; i++) {
+                var type = files[i].type;
+                if (type.substring(0, 6) !== "image/")
+                    continue;
+                var img = document.createElement("img");
+                // blob:http://localhost:63342/8def8e3a-198b-4cba-8c2b-a214fa7212fa
+                img.src = getBlobURL(files[i]);
+                img.onload = function () {
+                    this.width = 100;
+                    document.body.appendChild(this);
+                    revokeBlobURL(this.url);
+                };
+
+                droptarget.classList.remove("active");
+                return false;
+            }
+        }
+    };
+</script>
+</html>

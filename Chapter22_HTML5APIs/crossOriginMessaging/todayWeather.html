@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TodayWeather</title>
+    <style>
+        body {
+            font: 9pt sans-serif;
+        }
+    </style>
+    <script type="application/javascript"
+            src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
+    <script>
+        window.addEventListener("message", handleMessage, false);
+
+        function handleMessage(e) {
+            var show_weather = document.getElementById("show_weather");
+            if (e.source !== window.parent) return;
+            var city = e.data;
+            var key = "d264dd345a4b4bd98ed7785d1d68c2bd";
+            var url = "https://free-api.heweather.com/v5/forecast?city=" + city + "&key=" + key;
+            jQuery.getJSON(url, function (data) {
+                try {
+                    var today = data["HeWeather5"][0]["daily_forecast"][0];
+                    var sun = today["cond"]["txt_n"];
+                    var wind = today["wind"]["dir"];
+                    show_weather.innerText = sun + " " + wind;
+                } catch (e) {
+                    show_weather.innerText = e.toString();
+                }
+            });
+        }
+
+        $(function () {
+            window.parent.postMessage("Today Weather Gadget Loaded", "*");
+        })
+    </script>
+</head>
+<body>
+<div id="show_weather"></div>
+</body>
+</html>
